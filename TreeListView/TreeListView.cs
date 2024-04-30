@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using MahApps.Metro.Converters;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -121,12 +122,15 @@ namespace TreeListView
 			else if (firstColumn.CellTemplateSelector != null)
 		        spFactory.SetValue(ContentPresenter.ContentTemplateSelectorProperty, firstColumn.CellTemplateSelector);
 
-	        spFactory.SetBinding(MarginProperty,
+            // Create an instance of the local converter
+            var marginConverter = new TreeViewMarginConverter { Length = 12 };  // Set the length accordingly
+
+            spFactory.SetBinding(MarginProperty,
 		        new Binding
 		        {
 			        RelativeSource =
 				        new RelativeSource(RelativeSourceMode.FindAncestor, typeof(TreeListViewItem), 1),
-			        Converter = (IValueConverter)Application.Current.Resources["LengthConverter"]
+			        Converter = marginConverter
 		        });
 
 	        var dataTemplate = new DataTemplate {VisualTree = spFactory};
